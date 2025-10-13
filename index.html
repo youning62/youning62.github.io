@@ -1,108 +1,119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Youning Zheng — Portfolio</title>
-<meta name="description" content="Portfolio of Youning Zheng: software projects in Java/Python, OOP, testing, and creative media." />
-<style>
-  :root{
-    --fg:#0f172a;--muted:#64748b;--line:#e2e8f0;--bg:#f8fafc;--card:#ffffff;--link:#2563eb;
-  }
-  *{box-sizing:border-box} body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg);}
-  header{padding:56px 16px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
-  h1{margin:0 0 8px;font-size:32px;letter-spacing:.2px}
-  .sub{color:var(--muted)}
-  .wrap{max-width:980px;margin:0 auto;padding:28px 16px}
-  h2{font-size:22px;margin:0 0 12px}
-  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-  .card h3{margin:0 0 6px;font-size:18px}
-  .tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin:4px 6px 0 0;font-size:12px;color:var(--muted)}
-  a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
-  .muted{color:var(--muted)}
-  footer{padding:28px 16px;text-align:center;color:var(--muted)}
-  .cta{display:inline-block;margin-top:10px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Youning Zheng | Portfolio</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #fafafa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #0d1117;
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    header h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3rem;
+      color: #111;
+    }
+    a {
+      color: #0969da;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .project {
+      margin-bottom: 1.5rem;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <h1>Youning Zheng</h1>
-  <div class="sub">Programmer — Java · Python · OOP · Testing · Boston, MA</div>
-  <div class="sub">Email: <a href="mailto:zheng.youn@northeastern.edu">zheng.youn@northeastern.edu</a> · Phone: 617-845-2873</div>
-  <div style="margin-top:10px">
-    <a class="cta" href="Youning-Zheng-Resume.pdf">Download Resume (PDF)</a>
-  </div>
-</header>
-
-<main class="wrap">
-  <section>
-    <h2>About</h2>
-    <p class="muted">
-      I build clean, testable software with a focus on object-oriented design and practical problem solving.
-      Recent work includes an MVC implementation of Klondike Solitaire, a 2048 puzzle engine, and a credit card account simulator.
-      Private academic repositories are available upon request.
-    </p>
-  </section>
-
-  <section>
-    <h2>Projects</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>Klondike Solitaire</h3>
-        <p>Java · MVC · JUnit</p>
-        <p>Implemented full game logic: deck generation, cascade/foundation piles, draw/discard cycle, move validation, and scoring. 
-           Separated concerns with MVC and verified behavior via unit tests.</p>
-        <span class="tag">Java</span><span class="tag">OOP</span><span class="tag">Testing</span>
-        <p class="muted">Code: private (access upon request)</p>
-      </article>
-
-      <article class="card">
-        <h3>2048 Puzzle Engine</h3>
-        <p>Java · OOP · TDD</p>
-        <p>Built tile movement/merge/score mechanics with deterministic tests and edge-case handling; used debugger and tests to ensure correctness.</p>
-        <span class="tag">Java</span><span class="tag">TDD</span>
-        <p class="muted">Code: private (access upon request)</p>
-      </article>
-
-      <article class="card">
-        <h3>Credit Card Account Simulator</h3>
-        <p>Java · Abstraction · Unit Tests</p>
-        <p>Modeled APR interest, payments, and statements; separated financial computation from I/O; passed automated tests validating compounding logic.</p>
-        <span class="tag">Java</span><span class="tag">Design</span>
-        <p class="muted">Code: private (access upon request)</p>
-      </article>
-
-      <article class="card">
-        <h3>Ren’Py Adventure (WIP)</h3>
-        <p>Python · Ren’Py · Narrative Systems</p>
-        <p>Prototyped an interactive adventure with branching dialogues, state tracking, and animation triggers.</p>
-        <span class="tag">Python</span><span class="tag">Scripting</span>
-      </article>
-    </div>
-  </section>
-
-  <section>
-    <h2>Creative / Media</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>Language Micro-Lessons</h3>
-        <p>CapCut · Scripting · Editing</p>
-        <p>Produced educational short-form videos; reached <b>47K+</b> followers and <b>1.1M+</b> likes.</p>
-        <p><a href="https://www.tiktok.com/@leo.zheng0" target="_blank" rel="noreferrer">TikTok: @leo.zheng0</a></p>
-      </article>
-    </div>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
+  <header>
+    <h1>Youning Zheng</h1>
+    <p>Programmer | Software Developer | Content Creator</p>
     <p>
-      Email: <a href="mailto:zheng.youn@northeastern.edu">zheng.youn@northeastern.edu</a> ·
-      GitHub: <span class="muted">https://github.com/youning62</span>
+      <a href="mailto:zheng.youn@northeastern.edu" style="color: #58a6ff;">zheng.youn@northeastern.edu</a> · 
+      <a href="https://github.com/youning62" style="color: #58a6ff;" target="_blank">GitHub</a>
     </p>
-  </section>
-</main>
+  </header>
 
-<footer>© Youning Zheng</footer>
+  <main>
+    <section>
+      <h2>About Me</h2>
+      <p>
+        I’m a computer science student passionate about building software, games, and creative digital experiences. 
+        I’ve developed Java-based games like 2048 and Klondike Solitaire, explored Python scripting for automation and cybersecurity, 
+        and produced short-form educational videos on TikTok with over 47K followers.
+      </p>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+
+      <div class="project">
+        <h3>Klondike Solitaire Game (Java)</h3>
+        <p>
+          Designed and implemented an interactive version of the Klondike Solitaire card game in Java, 
+          following object-oriented principles. Includes model, controller, and test components.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>2048 Puzzle Game (Java)</h3>
+        <p>
+          Built a simplified version of 2048 with tile-merging logic, score tracking, and test-driven design in Eclipse.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>Credit Card Simulator (Java)</h3>
+        <p>
+          Developed a credit account simulation system that models APR, payments, and transaction logic using abstraction and polymorphism.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>TikTok Chinese Language Series</h3>
+        <p>
+          Created viral Chinese language learning videos (“In China we don’t say...”), 
+          reaching 47K+ followers and over 1.1M likes. Focused on creative scripting and CapCut video editing.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Connect</h2>
+      <p>
+        💼 <a href="https://github.com/youning62" target="_blank">GitHub</a><br />
+        🎬 <a href="https://www.tiktok.com/@leo.zheng0" target="_blank">TikTok: @leo.zheng0</a><br />
+        ✉️ <a href="mailto:zheng.youn@northeastern.edu">zheng.youn@northeastern.edu</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>
