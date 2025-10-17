@@ -1,120 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Youning Zheng | Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youning Zheng | Software Engineer</title>
   <style>
-    body {
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      background-color: #fafafa;
-      color: #222;
+    * {
       margin: 0;
       padding: 0;
-      line-height: 1.6;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
+
+    body {
+      background: linear-gradient(120deg, #0a0f24, #1a1f3c);
+      color: white;
+      overflow-x: hidden;
+    }
+
     header {
-      background: #0d1117;
-      color: #fff;
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 100px 20px 60px;
+      animation: fadeInDown 1.5s ease;
     }
-    header h1 {
-      margin-bottom: 0.5rem;
-      font-size: 2.5rem;
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, #00eaff, #007bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    header p {
-      font-size: 1.2rem;
-      margin: 0;
-    }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    section {
-      margin-bottom: 3rem;
-    }
+
     h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 0.3rem;
-      color: #111;
+      margin-top: 15px;
+      font-weight: 400;
+      color: #a8b2d1;
     }
-    a {
-      color: #0969da;
+
+    .section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 1.5s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 40px rgba(0, 123, 255, 0.5);
+    }
+
+    h3 {
+      color: #00eaff;
+      margin-bottom: 15px;
+    }
+
+    p, li {
+      color: #d0d8f0;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+
+    .contact {
+      text-align: center;
+      padding: 50px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact a {
+      color: #00eaff;
       text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .contact a:hover {
+      color: #ffffff;
     }
-    .project {
-      margin-bottom: 1.5rem;
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Youning Zheng</h1>
-    <p>Programmer | Software Developer | Content Creator</p>
-    <p>
-      <a href="mailto:zheng.youn@northeastern.edu" style="color: #58a6ff;">zheng.youn@northeastern.edu</a> · 
-      <a href="https://github.com/youning62" style="color: #58a6ff;" target="_blank">GitHub</a>
-    </p>
+    <h2>Software Engineer | Developer | Innovator</h2>
   </header>
 
-  <main>
-    <section>
-      <h2>About Me</h2>
-      <p>
-        I’m a computer science student passionate about building software, games, and creative digital experiences. 
-        I’ve developed Java-based games like 2048 and Klondike Solitaire, explored Python scripting for automation and cybersecurity, 
-        and produced short-form educational videos on TikTok with over 47K followers.
-      </p>
-    </section>
+  <section class="section">
+    <h3>About Me</h3>
+    <p>I am a Computer Science student at Northeastern University with strong skills in Java, Python, and web development. I specialize in building interactive applications and scalable systems, combining creative design with technical precision.</p>
+  </section>
 
-    <section>
-      <h2>Projects</h2>
+  <section class="section">
+    <h3>Featured Projects</h3>
+    <ul>
+      <li><strong>Klondike Solitaire Game</strong> – Built a fully functional Java-based solitaire game using OOP principles, implementing custom logic for cascade moves and score tracking.</li>
+      <li><strong>2048 Game</strong> – Designed a simplified version of the classic puzzle game, integrating tile movement and merge algorithms with JUnit testing for correctness.</li>
+      <li><strong>Paint Blending App</strong> – Developed Java classes for digital color mixing using polymorphism and interfaces to simulate blend, brighten, and darken behaviors.</li>
+      <li><strong>CTF Cybersecurity Challenges</strong> – Solved SQL injection and buffer overflow problems using Python scripts in a Linux environment to detect system vulnerabilities.</li>
+    </ul>
+  </section>
 
-      <div class="project">
-        <h3>Klondike Solitaire Game (Java)</h3>
-        <p>
-          Designed and implemented an interactive version of the Klondike Solitaire card game in Java, 
-          following object-oriented principles. Includes model, controller, and test components.
-        </p>
-      </div>
+  <section class="section">
+    <h3>Technical Skills</h3>
+    <p><strong>Languages:</strong> Java, Python, Racket, JavaScript</p>
+    <p><strong>Tools & Frameworks:</strong> IntelliJ, Eclipse, React, Spring Boot, GitHub</p>
+    <p><strong>Concepts:</strong> Object-Oriented Design, Algorithms, UI/UX Design, Testing, Agile Development</p>
+  </section>
 
-      <div class="project">
-        <h3>2048 Puzzle Game (Java)</h3>
-        <p>
-          Built a simplified version of 2048 with tile-merging logic, score tracking, and test-driven design in Eclipse.
-        </p>
-      </div>
+  <section class="section">
+    <h3>Experience</h3>
+    <p><strong>Global Student Ambassador, Northeastern University</strong> – Tutored 20+ students weekly in Calculus I & II, developed learning materials, and improved average test performance by 20%.</p>
+  </section>
 
-      <div class="project">
-        <h3>Credit Card Simulator (Java)</h3>
-        <p>
-          Developed a credit account simulation system that models APR, payments, and transaction logic using abstraction and polymorphism.
-        </p>
-      </div>
-
-      <div class="project">
-        <h3>TikTok Chinese Language Series</h3>
-        <p>
-          Created viral Chinese language learning videos (“In China we don’t say...”), 
-          reaching 47K+ followers and over 1.1M likes. Focused on creative scripting and CapCut video editing.
-        </p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Connect</h2>
-      <p>
-        📄 <a href="Youning-Zheng-Resume.pdf" target="_blank">Download My Resume (PDF)</a><br />
-        💼 <a href="https://github.com/youning62" target="_blank">GitHub</a><br />
-        🎬 <a href="https://www.tiktok.com/@leo.zheng0" target="_blank">TikTok: @leo.zheng0</a><br />
-        ✉️ <a href="mailto:zheng.youn@northeastern.edu">zheng.youn@northeastern.edu</a>
-      </p>
-    </section>
-  </main>
+  <div class="contact">
+    <p>📫 Let's Connect:</p>
+    <a href="mailto:zheng.youn@northeastern.edu">Email</a> |
+    <a href="https://youning62.github.io/">Portfolio</a> |
+    <a href="https://github.com/youning62">GitHub</a> |
+    <a href="https://linkedin.com/in/youning123">LinkedIn</a>
+  </div>
 </body>
 </html>
