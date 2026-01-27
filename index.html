@@ -35,12 +35,12 @@
     .nav a:hover::before{width:80%}
 
     /* --- hero --- */
-    .hero{padding:64px 20px 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
-    .hero-content{opacity:0;transform:translateY(30px);animation:fadeInUp .8s ease forwards}
-    .kicker{color:var(--brand1);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.75rem;margin-bottom:12px;opacity:0;animation:fadeInUp .8s ease .2s forwards}
-    h1{font-size:clamp(28px,5vw,48px);line-height:1.1;margin:.35rem 0;background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fadeInUp .8s ease .4s forwards}
-    .lede{color:var(--muted);font-size:1.05rem;line-height:1.6;opacity:0;animation:fadeInUp .8s ease .6s forwards}
-    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;opacity:0;animation:fadeInUp .8s ease .8s forwards}
+    .hero{padding:32px 20px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+    .hero-content{opacity:1;transform:translateY(0)}
+    .kicker{color:var(--brand1);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.75rem;margin-bottom:12px;opacity:1}
+    h1{font-size:clamp(28px,5vw,48px);line-height:1.1;margin:.35rem 0;background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:1}
+    .lede{color:var(--muted);font-size:1.05rem;line-height:1.6;opacity:1}
+    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;opacity:1}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;transition:all .3s ease;position:relative;overflow:hidden}
     .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.2);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
     .btn:hover::before{width:300px;height:300px}
@@ -48,7 +48,7 @@
     .btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,122,255,.4)}
     .btn.ghost{border:1px solid rgba(255,255,255,.18);color:var(--txt);background:rgba(255,255,255,.04);position:relative;z-index:1}
     .btn.ghost:hover{border-color:var(--brand1);background:rgba(0,234,255,.1);transform:translateY(-2px)}
-    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;opacity:0;transform:translateY(30px);animation:fadeInUp .8s ease 1s forwards;backdrop-filter:blur(10px)}
+    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;opacity:1;transform:translateY(0);backdrop-filter:blur(10px)}
     .tech{
       display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
     }
@@ -112,7 +112,7 @@
 
     /* responsive */
     @media (max-width: 900px){
-      .hero{grid-template-columns:1fr;min-height:auto;padding:64px 20px}
+      .hero{grid-template-columns:1fr;min-height:auto;padding:32px 20px 40px}
       .card-grid{grid-template-columns:1fr}
       .tech{grid-template-columns:repeat(2,minmax(0,1fr))}
       .skills-grid{grid-template-columns:1fr}
@@ -120,7 +120,7 @@
       .nav a{font-size:.9rem;padding:6px 10px}
     }
     @media (max-width: 600px){
-      .hero{padding:48px 20px 32px}
+      .hero{padding:24px 20px 32px}
       section{padding:48px 20px}
       .card{padding:18px}
     }
