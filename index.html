@@ -13,6 +13,7 @@
       --bg:#0a1022; --bg2:#0f1630; --txt:#e6edff; --muted:#a8b2d1; --brand1:#00eaff; --brand2:#4f7fff; --glass:rgba(255,255,255,.06)
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     html,body{height:100%}
     body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1000px 600px at 80% -10%, #15204a 0%, transparent 60%), linear-gradient(120deg,var(--bg),var(--bg2));color:var(--txt);overflow-x:hidden}
 
@@ -20,62 +21,115 @@
     #bg-canvas{position:fixed;inset:0;z-index:-1}
 
     /* --- layout --- */
-    header{position:sticky;top:0;backdrop-filter:saturate(140%) blur(10px);background:linear-gradient(to bottom, rgba(10,16,34,.75), rgba(10,16,34,.25));border-bottom:1px solid rgba(255,255,255,.08);z-index:10}
+    header{position:sticky;top:0;backdrop-filter:saturate(140%) blur(10px);background:linear-gradient(to bottom, rgba(10,16,34,.75), rgba(10,16,34,.25));border-bottom:1px solid rgba(255,255,255,.08);z-index:10;transition:all .3s ease}
+    header.scrolled{background:linear-gradient(to bottom, rgba(10,16,34,.95), rgba(10,16,34,.85));box-shadow:0 4px 20px rgba(0,0,0,.3)}
     .container{max-width:1100px;margin:0 auto;padding:0 20px}
     nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .brand{font-weight:800;letter-spacing:.3px}
+    .brand{font-weight:800;letter-spacing:.3px;font-size:1.1rem;transition:transform .2s}
+    .brand:hover{transform:scale(1.05)}
     .brand b{background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-    .nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600}
-    .nav a:hover{color:var(--txt)}
+    .nav{display:flex;align-items:center;gap:8px}
+    .nav a{color:var(--muted);text-decoration:none;padding:8px 12px;font-weight:600;border-radius:8px;transition:all .2s;position:relative}
+    .nav a::before{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:linear-gradient(90deg,var(--brand1),var(--brand2));transition:all .3s;transform:translateX(-50%)}
+    .nav a:hover{color:var(--txt);background:rgba(255,255,255,.05)}
+    .nav a:hover::before{width:80%}
 
     /* --- hero --- */
-    .hero{padding:96px 20px 64px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
-    .kicker{color:var(--brand1);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.75rem}
-    h1{font-size:clamp(28px,5vw,48px);line-height:1.1;margin:.35rem 0;background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-    .lede{color:var(--muted);font-size:1.05rem}
-    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn.primary{background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#001225;box-shadow:0 8px 24px rgba(0,122,255,.25)}
-    .btn.ghost{border:1px solid rgba(255,255,255,.18);color:var(--txt);background:rgba(255,255,255,.04)}
-    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
+    .hero{padding:96px 20px 64px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;min-height:80vh}
+    .hero-content{opacity:0;transform:translateY(30px);animation:fadeInUp .8s ease forwards}
+    .kicker{color:var(--brand1);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.75rem;margin-bottom:12px;opacity:0;animation:fadeInUp .8s ease .2s forwards}
+    h1{font-size:clamp(28px,5vw,48px);line-height:1.1;margin:.35rem 0;background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fadeInUp .8s ease .4s forwards}
+    .lede{color:var(--muted);font-size:1.05rem;line-height:1.6;opacity:0;animation:fadeInUp .8s ease .6s forwards}
+    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;opacity:0;animation:fadeInUp .8s ease .8s forwards}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;transition:all .3s ease;position:relative;overflow:hidden}
+    .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.2);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
+    .btn:hover::before{width:300px;height:300px}
+    .btn.primary{background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#001225;box-shadow:0 8px 24px rgba(0,122,255,.25);position:relative;z-index:1}
+    .btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,122,255,.4)}
+    .btn.ghost{border:1px solid rgba(255,255,255,.18);color:var(--txt);background:rgba(255,255,255,.04);position:relative;z-index:1}
+    .btn.ghost:hover{border-color:var(--brand1);background:rgba(0,234,255,.1);transform:translateY(-2px)}
+    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;opacity:0;transform:translateY(30px);animation:fadeInUp .8s ease 1s forwards;backdrop-filter:blur(10px)}
     .tech{
       display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
     }
-    .chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:100px;padding:8px 12px;font-size:.9rem;text-align:center}
+    .chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:100px;padding:8px 12px;font-size:.9rem;text-align:center;transition:all .3s;cursor:default}
+    .chip:hover{background:rgba(0,234,255,.15);border-color:var(--brand1);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,234,255,.2)}
 
     /* --- sections --- */
-    section{padding:64px 20px}
+    section{padding:64px 20px;opacity:0;transform:translateY(50px);transition:opacity .8s ease,transform .8s ease}
+    section.visible{opacity:1;transform:translateY(0)}
     .section{max-width:1100px;margin:0 auto}
-    .section h2{font-size:1.6rem;margin:0 0 18px}
-    .card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-    .card{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;transition:transform .25s ease, box-shadow .25s ease}
-    .card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(0,122,255,.15)}
-    .card h3{margin:4px 0 8px;color:var(--brand1)}
+    .section h2{font-size:clamp(1.8rem,4vw,2.2rem);margin:0 0 32px;position:relative;display:inline-block}
+    .section h2::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;background:linear-gradient(90deg,var(--brand1),var(--brand2));border-radius:2px}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+    .card{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--brand1),var(--brand2));transform:scaleX(0);transition:transform .4s}
+    .card:hover::before{transform:scaleX(1)}
+    .card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,122,255,.2);border-color:rgba(0,234,255,.3)}
+    .card h3{margin:0 0 12px;color:var(--brand1);font-size:1.3rem;font-weight:700}
+    .card p{color:var(--muted);line-height:1.6;margin:0 0 16px}
+    .card .tech-tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .card .tech-tag{font-size:.75rem;padding:4px 10px;background:rgba(0,234,255,.1);border:1px solid rgba(0,234,255,.2);border-radius:12px;color:var(--brand1)}
+    .card .card-link{display:inline-flex;align-items:center;gap:6px;color:var(--brand1);text-decoration:none;font-weight:600;font-size:.9rem;transition:all .3s;margin-top:8px}
+    .card .card-link:hover{gap:10px;color:var(--brand2)}
     .meta{font-size:.85rem;color:var(--muted);margin-bottom:10px}
-    .card ul{margin:0 0 0 18px}
+    .card ul{margin:0 0 0 18px;line-height:1.8}
+
+    /* skills section */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:24px}
+    .skill-category{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;backdrop-filter:blur(10px);transition:all .3s}
+    .skill-category:hover{transform:translateY(-4px);border-color:rgba(0,234,255,.3);box-shadow:0 10px 30px rgba(0,122,255,.15)}
+    .skill-category h3{color:var(--brand1);margin:0 0 16px;font-size:1.1rem}
+    .skill-category ul{list-style:none;margin:0;padding:0;line-height:2}
+    .skill-category li{color:var(--muted);padding-left:24px;position:relative}
+    .skill-category li::before{content:'▹';position:absolute;left:0;color:var(--brand1)}
 
     /* resume block */
-    .resume{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border:1px dashed rgba(255,255,255,.18);padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(0,234,255,.06), rgba(79,127,255,.06))}
-    .resume .glow{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#06122a;text-decoration:none;font-weight:800}
+    .resume{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border:1px dashed rgba(255,255,255,.18);padding:24px;border-radius:14px;background:linear-gradient(180deg, rgba(0,234,255,.06), rgba(79,127,255,.06));transition:all .3s;position:relative;overflow:hidden}
+    .resume::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.05),transparent);transform:rotate(45deg);transition:all .6s}
+    .resume:hover::before{top:50%;left:50%}
+    .resume:hover{border-color:var(--brand1);box-shadow:0 10px 30px rgba(0,234,255,.2)}
+    .resume p{margin:0;flex:1;min-width:200px}
+    .resume .glow{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:12px;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#06122a;text-decoration:none;font-weight:800;transition:all .3s;position:relative;z-index:1}
+    .resume .glow:hover{transform:scale(1.05);box-shadow:0 8px 24px rgba(0,234,255,.4)}
 
     /* contacts */
-    .links{display:flex;gap:12px;flex-wrap:wrap}
+    .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+    .links .btn{min-width:120px;justify-content:center}
 
     /* footer */
-    footer{padding:36px 20px;color:var(--muted);border-top:1px solid rgba(255,255,255,.08);text-align:center}
+    footer{padding:36px 20px;color:var(--muted);border-top:1px solid rgba(255,255,255,.08);text-align:center;opacity:0;animation:fadeIn 1s ease 1.2s forwards}
+
+    /* animations */
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(30px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
 
     /* responsive */
     @media (max-width: 900px){
-      .hero{grid-template-columns:1fr}
+      .hero{grid-template-columns:1fr;min-height:auto;padding:64px 20px}
       .card-grid{grid-template-columns:1fr}
       .tech{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .skills-grid{grid-template-columns:1fr}
+      .nav{flex-wrap:wrap;gap:4px}
+      .nav a{font-size:.9rem;padding:6px 10px}
+    }
+    @media (max-width: 600px){
+      .hero{padding:48px 20px 32px}
+      section{padding:48px 20px}
+      .card{padding:18px}
     }
   </style>
 </head>
 <body>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-  <header>
+  <header id="header">
     <div class="container">
       <nav>
         <div class="brand">Youning <b>Zheng</b></div>
@@ -91,7 +145,7 @@
 
   <main class="container">
     <section class="hero" id="home">
-      <div>
+      <div class="hero-content">
         <div class="kicker">Software Engineer • Creative Builder</div>
         <h1>Building ideas through code — from interactive games to user‑centric tools.</h1>
         <p class="lede">CS @ Northeastern. I design and implement clean, testable software in Java & Python, with a strong interest in frontend UX and creative applications.</p>
@@ -112,35 +166,89 @@
       </div>
     </section>
 
-<section id="projects">
-    <h2>Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <h3>Credit Card Simulator</h3>
-        <p>A Java-based simulation system for modeling credit card transactions and account management logic.</p>
-        <a href="https://github.com/youning62/CreditCard-Simulator" target="_blank">View on GitHub →</a>
+    <section id="projects" class="section">
+      <h2>Featured Projects</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>🎮 Queen's Blood</h3>
+          <p>A strategic card game implemented in Java. Play directly in your browser or download to run locally.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Game Development</span>
+            <span class="tech-tag">Card Game</span>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+            <a href="queens-blood.html" class="card-link" style="background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#001225;padding:8px 16px;border-radius:8px;font-weight:700">🎮 Play Game</a>
+            <a href="https://github.com/youning62/Queens-Blood" target="_blank" class="card-link" rel="noopener">View on GitHub →</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Credit Card Simulator</h3>
+          <p>A Java-based simulation system for modeling credit card transactions and account management logic.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">OOP</span>
+            <span class="tech-tag">Simulation</span>
+          </div>
+          <a href="https://github.com/youning62/CreditCard-Simulator" target="_blank" class="card-link" rel="noopener">View on GitHub →</a>
+        </div>
+        <div class="card">
+          <h3>Klondike Game</h3>
+          <p>An object-oriented Java implementation of the classic Solitaire (Klondike) game featuring clean design patterns and logic-based gameplay.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Game Development</span>
+            <span class="tech-tag">Design Patterns</span>
+          </div>
+          <a href="https://github.com/youning62/Klondike-Game" target="_blank" class="card-link" rel="noopener">View on GitHub →</a>
+        </div>
+        <div class="card">
+          <h3>Simplified 2048 Game</h3>
+          <p>A simplified version of the 2048 puzzle game implemented in Java, focusing on logic, state transitions, and interactive UI behavior.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Game Logic</span>
+            <span class="tech-tag">UI/UX</span>
+          </div>
+          <a href="https://github.com/youning62/Simplified-2048-Game" target="_blank" class="card-link" rel="noopener">View on GitHub →</a>
+        </div>
       </div>
-      <div class="card">
-        <h3>Klondike Game</h3>
-        <p>An object-oriented Java implementation of the classic Solitaire (Klondike) game featuring clean design patterns and logic-based gameplay.</p>
-        <a href="https://github.com/youning62/Klondike-Game" target="_blank">View on GitHub →</a>
-      </div>
-      <div class="card">
-        <h3>Simplified 2048 Game</h3>
-        <p>A simplified version of the 2048 puzzle game implemented in Java, focusing on logic, state transitions, and interactive UI behavior.</p>
-        <a href="https://github.com/youning62/Simplified-2048-Game" target="_blank">View on GitHub →</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
     <section id="skills" class="section">
       <h2>Technical Skills</h2>
-      <div class="card">
-        <ul>
-          <li><strong>Languages:</strong> Java, Python, Racket, JavaScript (basic)</li>
-          <li><strong>Frameworks & Tools:</strong> IntelliJ, Eclipse, JUnit, Git/GitHub, React (learning), Spring Boot (learning)</li>
-          <li><strong>Concepts:</strong> OOP, data structures, unit testing, basic UX, MVC, Agile collaboration</li>
-        </ul>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>Languages</h3>
+          <ul>
+            <li>Java</li>
+            <li>Python</li>
+            <li>Racket</li>
+            <li>JavaScript (basic)</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Frameworks & Tools</h3>
+          <ul>
+            <li>IntelliJ IDEA</li>
+            <li>Eclipse</li>
+            <li>JUnit</li>
+            <li>Git/GitHub</li>
+            <li>React (learning)</li>
+            <li>Spring Boot (learning)</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Concepts & Practices</h3>
+          <ul>
+            <li>Object-Oriented Programming</li>
+            <li>Data Structures</li>
+            <li>Unit Testing</li>
+            <li>Basic UX Design</li>
+            <li>MVC Architecture</li>
+            <li>Agile Collaboration</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -148,18 +256,18 @@
       <h2>Resume</h2>
       <div class="resume">
         <p>Download or view my latest resume. Updated regularly with projects and experience.</p>
-        <!-- IMPORTANT: place your PDF in the repo root with this exact name -->
         <a class="glow" href="Youning-Zheng-Resume-7.pdf" target="_blank" rel="noopener">📄 View / Download Resume</a>
       </div>
     </section>
 
     <section id="contact" class="section">
-      <h2>Contact</h2>
+      <h2>Get In Touch</h2>
+      <p style="color:var(--muted);margin-bottom:24px">I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology!</p>
       <div class="links">
-        <a class="btn ghost" href="mailto:zheng.youn@northeastern.edu">Email</a>
-        <a class="btn ghost" href="https://github.com/youning62" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn ghost" href="https://www.linkedin.com/in/youning123" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn ghost" href="https://youning62.github.io" target="_blank" rel="noopener">Portfolio</a>
+        <a class="btn ghost" href="mailto:zheng.youn@northeastern.edu">📧 Email</a>
+        <a class="btn ghost" href="https://github.com/youning62" target="_blank" rel="noopener">💻 GitHub</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/youning123" target="_blank" rel="noopener">💼 LinkedIn</a>
+        <a class="btn ghost" href="https://youning62.github.io" target="_blank" rel="noopener">🌐 Portfolio</a>
       </div>
     </section>
   </main>
@@ -231,6 +339,56 @@
     addEventListener('resize', resize);
     resize();
     draw();
+
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+      if (section.id !== 'home') {
+        observer.observe(section);
+      }
+    });
+
+    // Header scroll effect
+    const header = document.getElementById('header');
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      
+      lastScroll = currentScroll;
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
   </script>
 </body>
 </html>
