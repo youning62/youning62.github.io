@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Queen's Blood - Play Online | Youning Zheng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a1022; --bg2:#0f1630; --txt:#e6edff; --muted:#a8b2d1; --brand1:#00eaff; --brand2:#4f7fff; --glass:rgba(255,255,255,.06)
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1000px 600px at 80% -10%, #15204a 0%, transparent 60%), linear-gradient(120deg,var(--bg),var(--bg2));color:var(--txt);overflow-x:hidden}
+    
+    .game-container{max-width:1200px;margin:0 auto;padding:40px 20px;min-height:100vh}
+    .game-header{text-align:center;margin-bottom:32px}
+    .game-header h1{font-size:clamp(2rem,5vw,3rem);margin:0 0 12px;background:linear-gradient(90deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .game-header p{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;color:var(--txt);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:all .3s;margin-bottom:24px}
+    .back-btn:hover{background:rgba(255,255,255,.1);border-color:var(--brand1);transform:translateY(-2px)}
+    
+    .game-wrapper{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;backdrop-filter:blur(10px);min-height:600px;position:relative}
+    .loading{text-align:center;padding:60px 20px;color:var(--muted)}
+    .loading::after{content:'...';animation:dots 1.5s steps(4,end) infinite}
+    @keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+    
+    .run-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:24px}
+    .option-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;transition:all .3s}
+    .option-card:hover{border-color:var(--brand1);background:rgba(0,234,255,.05);transform:translateY(-4px)}
+    .option-card h3{color:var(--brand1);margin:0 0 12px;font-size:1.1rem}
+    .option-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin:0 0 16px}
+    .option-btn{display:inline-block;padding:10px 20px;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#001225;text-decoration:none;border-radius:8px;font-weight:700;transition:all .3s}
+    .option-btn:hover{transform:scale(1.05);box-shadow:0 8px 24px rgba(0,234,255,.4)}
+    
+    .iframe-container{width:100%;height:700px;border:none;border-radius:12px;background:#000;overflow:hidden}
+    .iframe-container iframe{width:100%;height:100%;border:none}
+    
+    .instructions{background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:20px;margin-top:24px}
+    .instructions h3{color:var(--brand1);margin:0 0 12px}
+    .instructions ul{color:var(--muted);line-height:1.8;margin:0;padding-left:20px}
+    .instructions li{margin:8px 0}
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <a href="index.html" class="back-btn">← Back to Portfolio</a>
+    
+    <div class="game-header">
+      <h1>Queen's Blood</h1>
+      <p>A Java-based card game - Play directly in your browser!</p>
+    </div>
+    
+    <div class="game-wrapper">
+      <div id="game-content">
+        <div style="text-align:center;padding:40px 20px">
+          <h3 style="color:var(--brand1);margin-bottom:20px">Choose how to play:</h3>
+          <div class="run-options" style="margin-top:0">
+            <div class="option-card">
+              <h3>🎮 Option 1: Replit (Recommended)</h3>
+              <p>Run the game on Replit's online Java environment. Best for playing directly in browser.</p>
+              <a href="https://replit.com/@youning62/Queen-s-Blood" target="_blank" class="option-btn" onclick="loadReplit()">Play on Replit</a>
+            </div>
+            
+            <div class="option-card">
+              <h3>💻 Option 2: GitHub Codespaces</h3>
+              <p>Open the repository in GitHub Codespaces and run the game in the cloud IDE.</p>
+              <a href="https://github.com/codespaces/new?repo=youning62/Queens-Blood" target="_blank" class="option-btn">Open in Codespaces</a>
+            </div>
+            
+            <div class="option-card">
+              <h3>📥 Option 3: Download & Run Locally</h3>
+              <p>Clone the repository and run it on your local machine with Java installed.</p>
+              <a href="https://github.com/youning62/Queens-Blood/archive/refs/heads/main.zip" target="_blank" class="option-btn">Download ZIP</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="replit-embed" style="display:none" class="game-wrapper">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="color:var(--brand1);margin:0">Playing on Replit</h3>
+        <button onclick="closeReplit()" style="padding:8px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:var(--txt);cursor:pointer;font-weight:600">Close</button>
+      </div>
+      <iframe id="replit-frame" class="iframe-container" src="" allow="clipboard-read; clipboard-write"></iframe>
+    </div>
+    
+    <div class="instructions">
+      <h3>How to Play:</h3>
+      <ul>
+        <li>Click "Play on Replit" to run the game in your browser (recommended)</li>
+        <li>Or download the code and run <code>java Main</code> in the project directory</li>
+        <li>Make sure you have Java installed if running locally</li>
+        <li>Check the GitHub repository for detailed game rules and instructions</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    function loadReplit() {
+      const gameContent = document.getElementById('game-content');
+      const replitEmbed = document.getElementById('replit-embed');
+      const replitFrame = document.getElementById('replit-frame');
+      
+      // Replit project URL
+      const replitUrl = 'https://replit.com/@youning62/Queen-s-Blood?embed=true';
+      
+      replitFrame.src = replitUrl;
+      gameContent.style.display = 'none';
+      replitEmbed.style.display = 'block';
+    }
+    
+    function closeReplit() {
+      const gameContent = document.getElementById('game-content');
+      const replitEmbed = document.getElementById('replit-embed');
+      const replitFrame = document.getElementById('replit-frame');
+      
+      replitFrame.src = '';
+      replitEmbed.style.display = 'none';
+      gameContent.style.display = 'block';
+    }
+    
+    // Check if URL has ?embed parameter to auto-load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('embed') === 'replit') {
+      setTimeout(loadReplit, 500);
+    }
+  </script>
+</body>
+</html>
