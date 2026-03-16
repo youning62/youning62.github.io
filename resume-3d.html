@@ -17,6 +17,10 @@
       width:100vw;
       height:100vh;
       position:relative;
+      display:none; /* Hidden by default, show PDF first */
+    }
+    #canvas-container.active{
+      display:block;
     }
     .back-btn{
       position:fixed;
@@ -76,10 +80,10 @@
       inset:0;
       z-index:200;
       background:#f5f5f5;
-      display:none;
+      display:block; /* Show PDF by default */
     }
-    .pdf-viewer.active{
-      display:block;
+    .pdf-viewer.hidden{
+      display:none;
     }
     .pdf-viewer iframe{
       width:100%;
@@ -108,12 +112,12 @@
 </head>
 <body>
   <a href="index.html" class="back-btn">← Back to Portfolio</a>
-  <button class="pdf-btn" id="pdf-toggle">📄 View PDF</button>
+  <button class="pdf-btn" id="paper-toggle">🎨 View 3D Paper</button>
   <div id="canvas-container"></div>
   <div class="info">Click and drag to interact with the receipt</div>
   
   <div class="pdf-viewer" id="pdf-viewer">
-    <button class="close-btn" id="close-pdf">✕ Close PDF</button>
+    <button class="close-btn" id="close-paper">✕ Close 3D View</button>
     <iframe id="pdf-frame" src="Youning-Zheng-Resume-7.pdf"></iframe>
   </div>
 
@@ -305,7 +309,7 @@
     scene.background = new THREE.Color(0xf5f7fa);
     
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1, 10); // Adjusted for larger receipt
+    camera.position.set(0, 0.5, 11); // Adjusted for wider receipt
     camera.lookAt(0, 0, 0);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -335,8 +339,8 @@
     fillLight.position.set(-5, 5, -5);
     scene.add(fillLight);
     
-    // Receipt Paper (larger size for better readability)
-    const receipt = new ReceiptPaper(6, 9, 24, 45);
+    // Receipt Paper (wider and larger for better readability)
+    const receipt = new ReceiptPaper(9, 9, 30, 45);
     
     // Create geometry from particles
     const geometry = new THREE.BufferGeometry();
@@ -378,128 +382,135 @@
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
     
-    // Create canvas for receipt text
+    // Create canvas for receipt text (higher resolution for clarity)
     const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 2000; // Increased height for full resume
+    canvas.width = 2048; // Doubled for better text clarity
+    canvas.height = 2400; // Increased for full resume
     const ctx = canvas.getContext('2d');
     
     // Draw receipt content
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw resume content in receipt style
+    // Draw resume content in receipt style (scaled up for clarity)
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 52px monospace';
-    ctx.fillText('YOUNING ZHENG', 40, 80);
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
     
-    ctx.font = '28px monospace';
-    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, 120);
+    // Scale factor for higher resolution (2x)
+    const scale = 2;
+    ctx.scale(scale, scale);
     
-    let yPos = 160;
+    ctx.font = 'bold 56px monospace';
+    ctx.fillText('YOUNING ZHENG', 40, 40);
+    
+    ctx.font = '32px monospace';
+    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, 80);
+    
+    let yPos = 120;
     
     // Contact Info
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('CONTACT', 40, yPos);
-    yPos += 45;
-    ctx.font = '24px monospace';
-    ctx.fillText('Boston, MA | zheng.youn@northeastern.edu', 40, yPos);
-    yPos += 35;
-    ctx.fillText('617-845-2873', 40, yPos);
-    yPos += 35;
-    ctx.fillText('linkedin.com/in/youning123', 40, yPos);
-    yPos += 35;
-    ctx.fillText('github.com/youning62', 40, yPos);
     yPos += 50;
+    ctx.font = '28px monospace';
+    ctx.fillText('Boston, MA | zheng.youn@northeastern.edu', 40, yPos);
+    yPos += 40;
+    ctx.fillText('617-845-2873', 40, yPos);
+    yPos += 40;
+    ctx.fillText('linkedin.com/in/youning123', 40, yPos);
+    yPos += 40;
+    ctx.fillText('github.com/youning62', 40, yPos);
+    yPos += 55;
     
     // Education
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('EDUCATION', 40, yPos);
-    yPos += 45;
-    ctx.font = 'bold 26px monospace';
-    ctx.fillText('Northeastern University', 40, yPos);
-    yPos += 35;
-    ctx.font = '24px monospace';
-    ctx.fillText('B.S. Computer Science | GPA: 3.64/4.0', 40, yPos);
-    yPos += 35;
-    ctx.fillText('Dean\'s List | Expected: May 2027', 40, yPos);
-    yPos += 35;
-    ctx.fillText('Relevant: Program Design, Data Science,', 40, yPos);
-    yPos += 35;
-    ctx.fillText('Fundamentals of CS I & II', 40, yPos);
     yPos += 50;
+    ctx.font = 'bold 30px monospace';
+    ctx.fillText('Northeastern University', 40, yPos);
+    yPos += 40;
+    ctx.font = '28px monospace';
+    ctx.fillText('B.S. Computer Science | GPA: 3.64/4.0', 40, yPos);
+    yPos += 40;
+    ctx.fillText('Dean\'s List | Expected: May 2027', 40, yPos);
+    yPos += 40;
+    ctx.fillText('Relevant: Program Design, Data Science,', 40, yPos);
+    yPos += 40;
+    ctx.fillText('Fundamentals of CS I & II', 40, yPos);
+    yPos += 55;
     
     // Technical Skills
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('TECHNICAL SKILLS', 40, yPos);
-    yPos += 45;
-    ctx.font = '24px monospace';
-    ctx.fillText('Languages: Java, Racket, Python', 40, yPos);
-    yPos += 35;
-    ctx.fillText('Tools: IntelliJ IDEA, Eclipse, Dr.Racket', 40, yPos);
     yPos += 50;
+    ctx.font = '28px monospace';
+    ctx.fillText('Languages: Java, Racket, Python', 40, yPos);
+    yPos += 40;
+    ctx.fillText('Tools: IntelliJ IDEA, Eclipse, Dr.Racket', 40, yPos);
+    yPos += 55;
     
     // Work Experience
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('EXPERIENCE', 40, yPos);
-    yPos += 45;
-    ctx.font = 'bold 26px monospace';
-    ctx.fillText('Global Student Ambassador - TA', 40, yPos);
-    yPos += 35;
-    ctx.font = '24px monospace';
-    ctx.fillText('Northeastern University | Sept 2024 - Present', 40, yPos);
-    yPos += 35;
-    ctx.fillText('• Tutored 20+ students weekly in Calculus', 40, yPos);
-    yPos += 30;
-    ctx.fillText('• Improved exam scores by 15-20 points', 40, yPos);
-    yPos += 30;
-    ctx.fillText('• Strengthened communication skills', 40, yPos);
     yPos += 50;
+    ctx.font = 'bold 30px monospace';
+    ctx.fillText('Global Student Ambassador - TA', 40, yPos);
+    yPos += 40;
+    ctx.font = '28px monospace';
+    ctx.fillText('Northeastern University | Sept 2024 - Present', 40, yPos);
+    yPos += 40;
+    ctx.fillText('• Tutored 20+ students weekly in Calculus', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Improved exam scores by 15-20 points', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Strengthened communication skills', 40, yPos);
+    yPos += 55;
     
     // Projects
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('PROJECTS', 40, yPos);
-    yPos += 45;
-    ctx.font = 'bold 26px monospace';
+    yPos += 50;
+    ctx.font = 'bold 30px monospace';
     ctx.fillText('Simplified 2048 Game', 40, yPos);
-    yPos += 35;
-    ctx.font = '24px monospace';
+    yPos += 40;
+    ctx.font = '28px monospace';
     ctx.fillText('Java, Eclipse, JUnit | June 2025', 40, yPos);
-    yPos += 35;
+    yPos += 40;
     ctx.fillText('• OOP principles, unit testing', 40, yPos);
-    yPos += 50;
+    yPos += 55;
     
-    ctx.font = 'bold 26px monospace';
+    ctx.font = 'bold 30px monospace';
     ctx.fillText('Klondike Solitaire Game', 40, yPos);
-    yPos += 35;
-    ctx.font = '24px monospace';
+    yPos += 40;
+    ctx.font = '28px monospace';
     ctx.fillText('Java, MVC Pattern | Oct 2025', 40, yPos);
-    yPos += 35;
+    yPos += 40;
     ctx.fillText('• Clean architecture, modular design', 40, yPos);
-    yPos += 50;
+    yPos += 55;
     
-    ctx.font = 'bold 26px monospace';
+    ctx.font = 'bold 30px monospace';
     ctx.fillText('Paint Blending Application', 40, yPos);
-    yPos += 35;
-    ctx.font = '24px monospace';
+    yPos += 40;
+    ctx.font = '28px monospace';
     ctx.fillText('Java, Interfaces | May 2025', 40, yPos);
-    yPos += 35;
+    yPos += 40;
     ctx.fillText('• Color algorithms, optimization', 40, yPos);
-    yPos += 50;
+    yPos += 55;
     
     // Activities
-    ctx.font = 'bold 32px monospace';
+    ctx.font = 'bold 36px monospace';
     ctx.fillText('ACTIVITIES', 40, yPos);
-    yPos += 45;
-    ctx.font = '24px monospace';
-    ctx.fillText('• TikTok: 47K+ followers, 1.1M+ likes', 40, yPos);
-    yPos += 35;
-    ctx.fillText('• Judge, Boston Debate League', 40, yPos);
     yPos += 50;
-    
-    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, yPos);
+    ctx.font = '28px monospace';
+    ctx.fillText('• TikTok: 47K+ followers, 1.1M+ likes', 40, yPos);
     yPos += 40;
-    ctx.font = 'bold 28px monospace';
+    ctx.fillText('• Judge, Boston Debate League', 40, yPos);
+    yPos += 55;
+    
+    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, yPos);
+    yPos += 45;
+    ctx.font = 'bold 32px monospace';
     ctx.fillText('Availability: Jan - Aug 2026', 40, yPos);
     
     // Create texture from canvas
@@ -581,20 +592,22 @@
       document.body.classList.remove('dragging');
     }
     
-    // PDF viewer toggle
+    // Toggle between PDF and 3D paper view
     const pdfViewer = document.getElementById('pdf-viewer');
-    const pdfToggle = document.getElementById('pdf-toggle');
-    const closePdf = document.getElementById('close-pdf');
+    const paperToggle = document.getElementById('paper-toggle');
+    const closePaper = document.getElementById('close-paper');
     const canvasContainer = document.getElementById('canvas-container');
     
-    pdfToggle.addEventListener('click', () => {
-      pdfViewer.classList.add('active');
-      canvasContainer.style.display = 'none';
+    // Show 3D paper view (hide PDF)
+    paperToggle.addEventListener('click', () => {
+      pdfViewer.classList.add('hidden');
+      canvasContainer.classList.add('active');
     });
     
-    closePdf.addEventListener('click', () => {
-      pdfViewer.classList.remove('active');
-      canvasContainer.style.display = 'block';
+    // Close 3D view (show PDF)
+    closePaper.addEventListener('click', () => {
+      pdfViewer.classList.remove('hidden');
+      canvasContainer.classList.remove('active');
     });
     
     window.addEventListener('mousemove', onMouseMove);
