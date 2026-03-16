@@ -474,11 +474,14 @@
     }
     .visitor-list{
       position:absolute;
-      inset:0;
+      top:0;
+      left:0;
+      right:0;
       display:flex;
       flex-direction:column;
       gap:8px;
       animation:visitorScroll 26s linear infinite;
+      will-change:transform;
     }
     .visitor-item{
       display:flex;
@@ -841,11 +844,17 @@
       const numVisitors = 20; // Generate 20 visitors for smooth scrolling
       let html = '';
       
+      // Generate unique visitors
+      const visitors = [];
       for (let i = 0; i < numVisitors; i++) {
         const visitor = generateRandomName();
         const minutesAgo = Math.floor(Math.random() * 5); // 0-4 minutes ago
         const timeText = minutesAgo === 0 ? 'just visited' : `just visited ${minutesAgo} minute${minutesAgo > 1 ? 's' : ''} ago`;
-        
+        visitors.push({ visitor, timeText });
+      }
+      
+      // Create HTML for all visitors
+      visitors.forEach(({ visitor, timeText }) => {
         html += `
           <div class="visitor-item">
             <div class="visitor-avatar">${visitor.initials}</div>
@@ -855,15 +864,22 @@
             </div>
           </div>
         `;
-      }
+      });
       
-      // Duplicate for seamless scroll
+      // Duplicate for seamless infinite scroll
       html += html;
       visitorList.innerHTML = html;
+      
+      // Ensure animation is applied
+      visitorList.style.animation = 'visitorScroll 26s linear infinite';
     }
     
     // Generate visitors on page load
-    generateVisitorList();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', generateVisitorList);
+    } else {
+      generateVisitorList();
+    }
     // year
     document.getElementById('y').textContent = new Date().getFullYear();
 
