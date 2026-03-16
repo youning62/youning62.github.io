@@ -226,6 +226,9 @@
       -webkit-mask:
         linear-gradient(#000 0 0) content-box,
         linear-gradient(#000 0 0);
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
       -webkit-mask-composite:xor;
       mask-composite:exclude;
       opacity:0;
@@ -434,6 +437,103 @@
     .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
     .links .btn{min-width:120px;justify-content:center}
 
+    /* floating visitors window */
+    .visitor-float{
+      position:fixed;
+      right:18px;
+      bottom:86px;
+      width:220px;
+      height:280px;
+      border-radius:22px;
+      background:rgba(6,16,24,.72);
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 18px 40px rgba(15,23,42,.85);
+      backdrop-filter:blur(20px) saturate(170%);
+      padding:14px 14px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:6;
+      color:var(--txt);
+    }
+    .visitor-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      font-size:.8rem;
+      color:var(--muted);
+    }
+    .visitor-header span.label{
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:600;
+      color:var(--brand1);
+      font-size:.72rem;
+    }
+    .visitor-header span.dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 0, #bbf7d0, #22c55e);
+      box-shadow:0 0 12px rgba(74,222,128,.9);
+    }
+    .visitor-stream{
+      position:relative;
+      flex:1;
+      overflow:hidden;
+      mask-image:linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+    }
+    .visitor-list{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      animation:visitorScroll 26s linear infinite;
+    }
+    .visitor-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:.8rem;
+      padding:6px 4px;
+      color:var(--muted);
+    }
+    .visitor-avatar{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 0,rgba(255,255,255,.9),rgba(148,163,184,.7));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.7rem;
+      font-weight:600;
+      color:#020617;
+      box-shadow:0 8px 18px rgba(15,23,42,.75);
+      border:1px solid rgba(255,255,255,.65);
+    }
+    .visitor-meta{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .visitor-meta span.name{
+      font-weight:500;
+      color:var(--txt);
+    }
+    .visitor-meta span.time{
+      font-size:.7rem;
+      opacity:.8;
+    }
+
+    @keyframes visitorScroll{
+      from{transform:translateY(0)}
+      to{transform:translateY(-50%)}
+    }
+
     /* footer */
     footer{
       padding:36px 20px;
@@ -462,9 +562,94 @@
       to{opacity:1}
     }
 
+    /* floating visitor stream */
+    .visitor-stream{
+      position:fixed;
+      right:22px;
+      top:96px;
+      z-index:8;
+      pointer-events:none;
+    }
+    .visitor-glass{
+      width:240px;
+      border-radius:24px;
+      padding:14px 14px 10px;
+      background:rgba(5,15,24,.42);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 18px 40px rgba(15,23,42,.85);
+      backdrop-filter:blur(20px) saturate(170%);
+      overflow:hidden;
+      pointer-events:auto;
+    }
+    .visitor-header{
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    .visitor-row{
+      display:flex;
+      gap:10px;
+      white-space:nowrap;
+      animation:visitorMarquee 26s linear infinite;
+    }
+    .visitor-row-bottom{
+      margin-top:6px;
+      opacity:.9;
+      animation-duration:30s;
+      animation-direction:reverse;
+    }
+    .visitor-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(15,23,42,.85);
+      border:1px solid rgba(255,255,255,.16);
+      font-size:.72rem;
+      color:var(--muted);
+    }
+    .visitor-chip.chip-soft{
+      background:rgba(15,23,42,.70);
+      border-color:rgba(148,163,184,.46);
+    }
+    .visitor-chip .avatar{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--brand1),var(--brand2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.6rem;
+      font-weight:700;
+      color:#021018;
+    }
+    .visitor-chip .label{
+      opacity:.95;
+    }
+    .dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(148,163,184,.7);
+    }
+    .dot-online{
+      background:#4ade80;
+      box-shadow:0 0 6px rgba(74,222,128,.85);
+    }
+
+    @keyframes visitorMarquee{
+      from{transform:translateX(0)}
+      to{transform:translateX(-50%)}
+    }
+
     /* responsive */
     @media (max-width: 900px){
       .hero{grid-template-columns:1fr;min-height:auto;padding:28px 20px 40px}
+      .visitor-stream{display:none}
       .card-grid{grid-template-columns:1fr}
       .tech{grid-template-columns:repeat(2,minmax(0,1fr))}
       .skills-grid{grid-template-columns:1fr}
@@ -623,6 +808,104 @@
       </div>
     </section>
   </main>
+
+  <!-- floating faux visitor window -->
+  <aside class="visitor-float" aria-hidden="true">
+    <div class="visitor-header">
+      <span class="label">Recent visitors</span>
+      <span style="font-size:.72rem;opacity:.8">Last 5 min</span>
+      <span class="dot"></span>
+    </div>
+    <div class="visitor-stream">
+      <div class="visitor-list">
+        <div class="visitor-item">
+          <div class="visitor-avatar">LC</div>
+          <div class="visitor-meta">
+            <span class="name">Leo Chen</span>
+            <span class="time">Just now · Chrome · US</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">AM</div>
+          <div class="visitor-meta">
+            <span class="name">Alice M.</span>
+            <span class="time">1 min ago · Safari · UK</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">RK</div>
+          <div class="visitor-meta">
+            <span class="name">Ravi K.</span>
+            <span class="time">2 min ago · Edge · IN</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">JM</div>
+          <div class="visitor-meta">
+            <span class="name">Julia M.</span>
+            <span class="time">3 min ago · Chrome · DE</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">ST</div>
+          <div class="visitor-meta">
+            <span class="name">Satoshi T.</span>
+            <span class="time">3 min ago · Firefox · JP</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">MN</div>
+          <div class="visitor-meta">
+            <span class="name">Minseo N.</span>
+            <span class="time">4 min ago · Mobile · KR</span>
+          </div>
+        </div>
+        <!-- duplicate list for seamless scroll -->
+        <div class="visitor-item">
+          <div class="visitor-avatar">LC</div>
+          <div class="visitor-meta">
+            <span class="name">Leo Chen</span>
+            <span class="time">Just now · Chrome · US</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">AM</div>
+          <div class="visitor-meta">
+            <span class="name">Alice M.</span>
+            <span class="time">1 min ago · Safari · UK</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">RK</div>
+          <div class="visitor-meta">
+            <span class="name">Ravi K.</span>
+            <span class="time">2 min ago · Edge · IN</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">JM</div>
+          <div class="visitor-meta">
+            <span class="name">Julia M.</span>
+            <span class="time">3 min ago · Chrome · DE</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">ST</div>
+          <div class="visitor-meta">
+            <span class="name">Satoshi T.</span>
+            <span class="time">3 min ago · Firefox · JP</span>
+          </div>
+        </div>
+        <div class="visitor-item">
+          <div class="visitor-avatar">MN</div>
+          <div class="visitor-meta">
+            <span class="name">Minseo N.</span>
+            <span class="time">4 min ago · Mobile · KR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <footer>
     © <span id="y"></span> Youning Zheng — Built with HTML/CSS/JS on GitHub Pages.
