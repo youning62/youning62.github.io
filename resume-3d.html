@@ -267,8 +267,8 @@
     fillLight.position.set(-5, 5, -5);
     scene.add(fillLight);
     
-    // Receipt Paper
-    const receipt = new ReceiptPaper(4, 6, 20, 30);
+    // Receipt Paper (adjusted height for longer content)
+    const receipt = new ReceiptPaper(4, 7.5, 20, 38);
     
     // Create geometry from particles
     const geometry = new THREE.BufferGeometry();
@@ -313,62 +313,126 @@
     // Create canvas for receipt text
     const canvas = document.createElement('canvas');
     canvas.width = 1024;
-    canvas.height = 1536;
+    canvas.height = 2000; // Increased height for full resume
     const ctx = canvas.getContext('2d');
     
     // Draw receipt content
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw text (funny 3D graphics shopping list)
+    // Draw resume content in receipt style
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 48px monospace';
-    ctx.fillText('RECEIPT', 40, 80);
+    ctx.font = 'bold 52px monospace';
+    ctx.fillText('YOUNING ZHENG', 40, 80);
     
-    ctx.font = '32px monospace';
-    ctx.fillText('3D Graphics Shopping List', 40, 140);
-    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, 180);
+    ctx.font = '28px monospace';
+    ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, 120);
     
-    const items = [
-      { name: '1x Vertex Buffer', price: '$12.99', desc: 'Fresh vertices, never used' },
-      { name: '2x Texture Coordinates', price: '$8.50', desc: 'UV mapping included' },
-      { name: '1x Normal Vector Pack', price: '$15.00', desc: 'Pre-normalized' },
-      { name: '3x Transform Matrix', price: '$24.99', desc: '4x4, ready to multiply' },
-      { name: '1x Shader Compiler', price: '$49.99', desc: 'GLSL 330 compatible' },
-      { name: '2x Frame Buffer', price: '$18.00', desc: 'Double buffered' },
-      { name: '1x Depth Buffer', price: '$9.99', desc: 'Z-fighting not included' },
-      { name: '1x Ray Tracer', price: '$199.99', desc: 'Pathtracing optional' },
-      { name: '3x Quaternion', price: '$14.50', desc: 'No gimbal lock' },
-      { name: '1x Bounding Box', price: '$5.99', desc: 'Axis-aligned' },
-    ];
+    let yPos = 160;
     
-    let yPos = 240;
-    items.forEach((item, i) => {
-      ctx.font = 'bold 28px monospace';
-      ctx.fillText(item.name, 40, yPos);
-      ctx.font = '24px monospace';
-      ctx.fillText(item.desc, 60, yPos + 32);
-      ctx.font = '28px monospace';
-      const priceWidth = ctx.measureText(item.price).width;
-      ctx.fillText(item.price, canvas.width - 40 - priceWidth, yPos);
-      yPos += 80;
-    });
+    // Contact Info
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('CONTACT', 40, yPos);
+    yPos += 45;
+    ctx.font = '24px monospace';
+    ctx.fillText('Boston, MA | zheng.youn@northeastern.edu', 40, yPos);
+    yPos += 35;
+    ctx.fillText('617-845-2873', 40, yPos);
+    yPos += 35;
+    ctx.fillText('linkedin.com/in/youning123', 40, yPos);
+    yPos += 35;
+    ctx.fillText('github.com/youning62', 40, yPos);
+    yPos += 50;
+    
+    // Education
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('EDUCATION', 40, yPos);
+    yPos += 45;
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('Northeastern University', 40, yPos);
+    yPos += 35;
+    ctx.font = '24px monospace';
+    ctx.fillText('B.S. Computer Science | GPA: 3.64/4.0', 40, yPos);
+    yPos += 35;
+    ctx.fillText('Dean\'s List | Expected: May 2027', 40, yPos);
+    yPos += 35;
+    ctx.fillText('Relevant: Program Design, Data Science,', 40, yPos);
+    yPos += 35;
+    ctx.fillText('Fundamentals of CS I & II', 40, yPos);
+    yPos += 50;
+    
+    // Technical Skills
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('TECHNICAL SKILLS', 40, yPos);
+    yPos += 45;
+    ctx.font = '24px monospace';
+    ctx.fillText('Languages: Java, Racket, Python', 40, yPos);
+    yPos += 35;
+    ctx.fillText('Tools: IntelliJ IDEA, Eclipse, Dr.Racket', 40, yPos);
+    yPos += 50;
+    
+    // Work Experience
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('EXPERIENCE', 40, yPos);
+    yPos += 45;
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('Global Student Ambassador - TA', 40, yPos);
+    yPos += 35;
+    ctx.font = '24px monospace';
+    ctx.fillText('Northeastern University | Sept 2024 - Present', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Tutored 20+ students weekly in Calculus', 40, yPos);
+    yPos += 30;
+    ctx.fillText('• Improved exam scores by 15-20 points', 40, yPos);
+    yPos += 30;
+    ctx.fillText('• Strengthened communication skills', 40, yPos);
+    yPos += 50;
+    
+    // Projects
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('PROJECTS', 40, yPos);
+    yPos += 45;
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('Simplified 2048 Game', 40, yPos);
+    yPos += 35;
+    ctx.font = '24px monospace';
+    ctx.fillText('Java, Eclipse, JUnit | June 2025', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• OOP principles, unit testing', 40, yPos);
+    yPos += 50;
+    
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('Klondike Solitaire Game', 40, yPos);
+    yPos += 35;
+    ctx.font = '24px monospace';
+    ctx.fillText('Java, MVC Pattern | Oct 2025', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Clean architecture, modular design', 40, yPos);
+    yPos += 50;
+    
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText('Paint Blending Application', 40, yPos);
+    yPos += 35;
+    ctx.font = '24px monospace';
+    ctx.fillText('Java, Interfaces | May 2025', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Color algorithms, optimization', 40, yPos);
+    yPos += 50;
+    
+    // Activities
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('ACTIVITIES', 40, yPos);
+    yPos += 45;
+    ctx.font = '24px monospace';
+    ctx.fillText('• TikTok: 47K+ followers, 1.1M+ likes', 40, yPos);
+    yPos += 35;
+    ctx.fillText('• Judge, Boston Debate League', 40, yPos);
+    yPos += 50;
     
     ctx.fillText('━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 40, yPos);
     yPos += 40;
-    
-    const total = items.reduce((sum, item) => sum + parseFloat(item.price.replace('$', '')), 0);
-    ctx.font = 'bold 36px monospace';
-    ctx.fillText('TOTAL:', 40, yPos);
-    ctx.fillText(`$${total.toFixed(2)}`, canvas.width - 40 - ctx.measureText(`$${total.toFixed(2)}`).width, yPos);
-    
-    yPos += 60;
-    ctx.font = '24px monospace';
-    ctx.fillText('Thank you for shopping at', 40, yPos);
-    ctx.fillText('3D Graphics Emporium!', 40, yPos + 32);
-    yPos += 80;
-    ctx.fillText('Card: **** **** **** 4242', 40, yPos);
-    ctx.fillText('Auth: APPROVED', 40, yPos + 32);
+    ctx.font = 'bold 28px monospace';
+    ctx.fillText('Availability: Jan - Aug 2026', 40, yPos);
     
     // Create texture from canvas
     const texture = new THREE.CanvasTexture(canvas);
