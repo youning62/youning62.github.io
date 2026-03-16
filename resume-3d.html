@@ -164,7 +164,7 @@
         const delta = new THREE.Vector3().subVectors(this.p2.pos, this.p1.pos);
         const distance = delta.length();
         const diff = (distance - this.restLength) / distance;
-        const correction = delta.multiplyScalar(diff * 0.3); // Reduced from 0.5 to 0.3 to reduce stickiness
+        const correction = delta.multiplyScalar(diff * 0.15); // Further reduced to 0.15 to minimize stickiness
         
         if (!this.p1.pinned) {
           this.p1.pos.add(correction);
@@ -187,6 +187,9 @@
         this.selectedParticle = null;
         this.mousePos = new THREE.Vector3();
         this.isDragging = false;
+        this.resetTimer = null; // Timer for auto-reset after release
+        this.isResetting = false; // Flag to indicate reset in progress
+        this.releaseTime = null; // Time when mouse was released
         
         this.initParticles();
         this.initConstraints();
@@ -273,9 +276,12 @@
         // Update particles
         this.particles.forEach(p => p.update(dt));
         
-        // Solve constraints (reduced iterations to prevent sticking)
-        for (let i = 0; i < 1; i++) { // Reduced from 3 to 1 to reduce stickiness
-          this.constraints.forEach(c => c.solve());
+        // Solve constraints (skip during reset to prevent sticking)
+        if (!this.isResetting) {
+          // Only 1 iteration and weaker constraint to minimize stickiness
+          for (let i = 0; i < 1; i++) {
+            this.constraints.forEach(c => c.solve());
+          }
         }
         
         // Damping (much stronger when not dragging for faster recovery)
@@ -301,6 +307,22 @@
         });
         
         return closest;
+      }
+      
+      resetToInitial() {
+        // Force all particles back to their initial positions instantly
+        this.isResetting = true;
+        this.particles.forEach(p => {
+          if (!p.pinned) {
+            p.pos.copy(p.initialPos);
+            p.prevPos.copy(p.initialPos);
+            p.acc.set(0, 0, 0);
+          }
+        });
+        // Re-enable constraints after reset
+        setTimeout(() => {
+          this.isResetting = false;
+        }, 100);
       }
     }
 
@@ -574,6 +596,12 @@
         receipt.selectedParticle = receipt.getClosestParticle(localPos, 0.3);
         
         if (receipt.selectedParticle && !receipt.selectedParticle.pinned) {
+          // Clear any pending reset timer when starting new drag
+          if (receipt.resetTimer) {
+            clearTimeout(receipt.resetTimer);
+            receipt.resetTimer = null;
+            receipt.releaseTime = null;
+          }
           receipt.isDragging = true;
           receipt.selectedParticle.pinned = true;
           document.body.classList.add('dragging');
@@ -590,6 +618,21 @@
       }
       receipt.isDragging = false;
       document.body.classList.remove('dragging');
+      
+      // Record release time
+      receipt.releaseTime = Date.now();
+      
+      // Clear any existing reset timer
+      if (receipt.resetTimer) {
+        clearTimeout(receipt.resetTimer);
+      }
+      
+      // Set timer to reset to initial state after 1 second
+      receipt.resetTimer = setTimeout(() => {
+        receipt.resetToInitial();
+        receipt.resetTimer = null;
+        receipt.releaseTime = null;
+      }, 1000);
     }
     
     // Toggle between PDF and 3D paper view
@@ -624,8 +667,9 @@
       const dt = Math.min((now - lastTime) / 1000, 0.02);
       lastTime = now;
       
-      // Update physics (with restore force when not dragging)
-      const restoreForce = receipt.isDragging ? 0 : 20.0; // Much stronger restore when released
+      // Update physics (with restore force when not dragging, stronger before reset)
+      const timeSinceRelease = receipt.releaseTime ? (Date.now() - receipt.releaseTime) : 10000;
+      const restoreForce = receipt.isDragging ? 0 : (timeSinceRelease < 1000 ? 30.0 : 20.0); // Even stronger restore before reset
       receipt.update(dt, -9.8, restoreForce);
       
       // Update geometry
