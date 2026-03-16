@@ -35,25 +35,12 @@
       font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--txt);
       overflow-x:hidden;
-      background:
-        radial-gradient(1200px 800px at 10% -10%, rgba(255,255,255,.16), transparent 60%),
-        radial-gradient(900px 700px at 110% 110%, rgba(148,163,184,.18), transparent 55%),
-        linear-gradient(135deg,var(--bg),var(--bg2));
+      background:#e8ecf1; /* Pure light gray, no gradient */
       position:relative;
     }
     /* subtle moving highlight layer for liquid glass feel */
     body::before{
-      content:'';
-      position:fixed;
-      inset:-20%;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,.12), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(148,163,184,.20), transparent 60%);
-      opacity:.55;
-      mix-blend-mode:soft-light;
-      pointer-events:none;
-      animation:ambientFloat 46s linear infinite alternate;
-      z-index:-2;
+      display:none; /* Disabled for pure gray background */
     }
 
     /* --- background grid canvas (disabled for cleaner flat backdrop) --- */

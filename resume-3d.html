@@ -160,7 +160,7 @@
         const delta = new THREE.Vector3().subVectors(this.p2.pos, this.p1.pos);
         const distance = delta.length();
         const diff = (distance - this.restLength) / distance;
-        const correction = delta.multiplyScalar(diff * 0.5);
+        const correction = delta.multiplyScalar(diff * 0.3); // Reduced from 0.5 to 0.3 to reduce stickiness
         
         if (!this.p1.pinned) {
           this.p1.pos.add(correction);
@@ -251,13 +251,13 @@
       }
       
       update(dt, gravity = -9.8, restoreForce = 0) {
-        // Apply gravity (stronger when not dragging)
-        const gravityMultiplier = this.isDragging ? 0.1 : 0.3;
+        // Apply gravity (much stronger when not dragging for faster fall)
+        const gravityMultiplier = this.isDragging ? 0.1 : 0.8;
         this.particles.forEach(p => {
           if (!p.pinned) {
             p.addForce(new THREE.Vector3(0, gravity * gravityMultiplier, 0));
             
-            // Restore force to initial position (strong when not dragging)
+            // Restore force to initial position (very strong when not dragging)
             if (restoreForce > 0) {
               const restore = new THREE.Vector3().subVectors(p.initialPos, p.pos);
               restore.multiplyScalar(restoreForce);
@@ -269,13 +269,13 @@
         // Update particles
         this.particles.forEach(p => p.update(dt));
         
-        // Solve constraints (multiple iterations for stability)
-        for (let i = 0; i < 3; i++) {
+        // Solve constraints (reduced iterations to prevent sticking)
+        for (let i = 0; i < 1; i++) { // Reduced from 3 to 1 to reduce stickiness
           this.constraints.forEach(c => c.solve());
         }
         
-        // Damping (stronger when not dragging for faster recovery)
-        const damping = this.isDragging ? 0.98 : 0.92;
+        // Damping (much stronger when not dragging for faster recovery)
+        const damping = this.isDragging ? 0.98 : 0.85; // Reduced from 0.92 to 0.85
         this.particles.forEach(p => {
           if (!p.pinned) {
             const vel = new THREE.Vector3().subVectors(p.pos, p.prevPos);
@@ -305,8 +305,8 @@
     scene.background = new THREE.Color(0xf5f7fa);
     
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 2, 8);
-    camera.lookAt(0, -1, 0);
+    camera.position.set(0, 1, 10); // Adjusted for larger receipt
+    camera.lookAt(0, 0, 0);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -335,8 +335,8 @@
     fillLight.position.set(-5, 5, -5);
     scene.add(fillLight);
     
-    // Receipt Paper (adjusted height for longer content)
-    const receipt = new ReceiptPaper(4, 7.5, 20, 38);
+    // Receipt Paper (larger size for better readability)
+    const receipt = new ReceiptPaper(6, 9, 24, 45);
     
     // Create geometry from particles
     const geometry = new THREE.BufferGeometry();
@@ -612,7 +612,7 @@
       lastTime = now;
       
       // Update physics (with restore force when not dragging)
-      const restoreForce = receipt.isDragging ? 0 : 8.0; // Strong restore when released
+      const restoreForce = receipt.isDragging ? 0 : 20.0; // Much stronger restore when released
       receipt.update(dt, -9.8, restoreForce);
       
       // Update geometry
