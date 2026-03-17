@@ -9,7 +9,8 @@
     body{
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
       background:#2d2d2d; /* Pure dark gray */
-      overflow:hidden;
+      overflow-x:hidden;
+      overflow-y:auto; /* allow vertical scroll if needed */
       cursor:grab;
     }
     body.dragging{cursor:grabbing}
@@ -573,7 +574,7 @@
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     // Raise the entire receipt so it sits higher in the viewport
-    mesh.position.y = 1.8;
+    mesh.position.y = 2.8;
     scene.add(mesh);
     
     // Ground plane for shadow
