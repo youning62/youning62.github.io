@@ -572,6 +572,8 @@
     const mesh = new THREE.Mesh(geometry, material);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
+    // Raise the entire receipt so it sits higher in the viewport
+    mesh.position.y = 1.8;
     scene.add(mesh);
     
     // Ground plane for shadow
