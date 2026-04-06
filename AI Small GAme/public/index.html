@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- GitHub Pages 等静态托管：填入已部署的 Java 服务根 URL（无末尾斜杠），例如 https://xxx.onrender.com -->
+  <!-- Static hosting (e.g. GitHub Pages): set your deployed Java service root URL (no trailing slash), e.g. https://xxx.onrender.com -->
   <meta name="api-base" content="" />
   <title>AI Resume Analyzer</title>
   <style>
@@ -160,7 +160,7 @@
       }
       box.style.display = "block";
       box.innerHTML =
-        "当前为<strong>静态页面</strong>，分析接口未配置。若要全网可用，请将 Java 服务部署到 Render / Fly.io 等，并在本页 <code>&lt;meta name=&quot;api-base&quot; content=&quot;你的服务根URL&quot; /&gt;</code> 中填写地址；本地试用请运行 <code>mvn compile exec:java</code> 后打开 <code>http://localhost:4567/</code>。";
+        "This is a <strong>static page</strong> and the analysis API is not configured. To use it on the web, deploy the Java service (e.g. Render, Fly.io) and set your root URL in <code>&lt;meta name=&quot;api-base&quot; content=&quot;YOUR_SERVICE_ROOT&quot; /&gt;</code> on this page. For local use, run <code>mvn compile exec:java</code> and open <code>http://localhost:4567/</code>.";
     })();
 
     document.getElementById("analyzeBtn").addEventListener("click", async function () {
@@ -168,14 +168,14 @@
       const fileInput = document.getElementById("resume");
       const file = fileInput.files[0];
       if (!file) {
-        alert("请先选择 PDF 简历文件。");
+        alert("Please select a PDF resume file first.");
         return;
       }
 
       const analyzeUrl = resolveAnalyzeUrl();
       if (!analyzeUrl) {
         alert(
-          "未配置分析服务地址。静态托管（如 GitHub Pages）需在页面 <meta name=\"api-base\" content=\"后端根URL\" /> 中填写已部署的接口；本地请运行 Server 并访问 http://localhost:4567/"
+          "Analysis API URL is not configured. On static hosting (e.g. GitHub Pages), set <meta name=\"api-base\" content=\"YOUR_BACKEND_ROOT\" /> to your deployed backend. Locally, run the Server and open http://localhost:4567/"
         );
         return;
       }
@@ -211,7 +211,7 @@
         try {
           result = JSON.parse(text);
         } catch (e) {
-          throw new Error("服务器返回不是合法 JSON（HTTP " + response.status + "）");
+          throw new Error("Server response was not valid JSON (HTTP " + response.status + ")");
         }
 
         document.getElementById("score").innerText =
@@ -225,7 +225,7 @@
           const list = Array.isArray(items) ? items : [];
           if (list.length === 0) {
             const li = document.createElement("li");
-            li.innerText = "（无）";
+            li.innerText = "(none)";
             ul.appendChild(li);
             return;
           }
@@ -241,13 +241,13 @@
         updateList("questions", result.questions);
 
         if (!response.ok) {
-          alert("请求未成功（HTTP " + response.status + "），请查看 Suggestions 中的说明。");
+          alert("Request failed (HTTP " + response.status + "). Check the Suggestions section for details.");
         }
       } catch (err) {
         console.error(err);
         let msg = err.message || String(err);
         if (msg === "Failed to fetch" || err.name === "TypeError") {
-          msg = "无法连接服务器。请先在本机运行 Server（例如 mvn compile exec:java），并用地址栏打开 http://localhost:4567/ ，不要双击磁盘上的 index.html。";
+          msg = "Cannot reach the server. Run the Server locally (e.g. mvn compile exec:java) and open http://localhost:4567/ in the address bar—do not open index.html from disk via file://.";
         }
         alert(msg);
       } finally {

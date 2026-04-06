@@ -1,0 +1,6 @@
+target/
+*.class
+lib/
+.cursor/
+.vscode/
+.DS_Store
