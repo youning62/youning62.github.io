@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>请从本机服务器打开</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+    code { background: #eee; padding: 0.15em 0.4em; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>请用下面的链接打开应用</h1>
+  <p>若双击本文件夹里的 <code>index.html</code>，浏览器会用 <code>file://</code> 打开，常会<strong>无法访问</strong> <code>localhost</code>，控制台或弹窗会显示 <strong>Failed to fetch</strong>。</p>
+  <ol>
+    <li>在项目目录启动：<code>mvn compile exec:java</code>（或 IDE 运行 <code>Server</code>）</li>
+    <li>浏览器地址栏打开：<strong><a href="http://localhost:4567/">http://localhost:4567/</a></strong></li>
+  </ol>
+</body>
+</html>

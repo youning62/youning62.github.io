@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- GitHub Pages 等静态托管：填入已部署的 Java 服务根 URL（无末尾斜杠），例如 https://xxx.onrender.com -->
+  <meta name="api-base" content="" />
+  <title>AI Resume Analyzer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input[type="file"],
+    textarea,
+    button {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .result h2 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .api-notice {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #664d03;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .api-notice code {
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="apiNotice" class="api-notice" style="display: none" role="status"></div>
+    <h1>AI Resume Analyzer</h1>
+
+    <label for="resume">Upload Resume PDF</label>
+    <input type="file" id="resume" accept=".pdf" />
+
+    <label for="jobDescription">Job Description</label>
+    <textarea id="jobDescription" placeholder="Paste the job description here..."></textarea>
+
+    <button id="analyzeBtn">Analyze</button>
+
+    <div class="result">
+      <h2>Result</h2>
+      <p><strong>Score:</strong> <span id="score">Not analyzed yet</span></p>
+      <p><strong>Summary:</strong> <span id="summary">—</span></p>
+
+      <p><strong>Missing Skills:</strong></p>
+      <ul id="missingSkills">
+        <li>None yet</li>
+      </ul>
+
+      <p><strong>Suggestions:</strong></p>
+      <ul id="suggestions">
+        <li>None yet</li>
+      </ul>
+
+      <p><strong>Questions:</strong></p>
+      <ul id="questions">
+        <li>None yet</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    function getApiBaseFromMeta() {
+      const meta = document.querySelector('meta[name="api-base"]');
+      const raw = meta && meta.content ? meta.content.trim() : "";
+      return raw ? raw.replace(/\/$/, "") : "";
+    }
+
+    function resolveAnalyzeUrl() {
+      const fromMeta = getApiBaseFromMeta();
+      if (fromMeta) {
+        return fromMeta + "/analyze";
+      }
+      if (location.hostname === "localhost" && String(location.port) === "4567") {
+        return "/analyze";
+      }
+      return null;
+    }
+
+    (function initApiNotice() {
+      const url = resolveAnalyzeUrl();
+      const box = document.getElementById("apiNotice");
+      if (url || !box) {
+        return;
+      }
+      box.style.display = "block";
+      box.innerHTML =
+        "当前为<strong>静态页面</strong>，分析接口未配置。若要全网可用，请将 Java 服务部署到 Render / Fly.io 等，并在本页 <code>&lt;meta name=&quot;api-base&quot; content=&quot;你的服务根URL&quot; /&gt;</code> 中填写地址；本地试用请运行 <code>mvn compile exec:java</code> 后打开 <code>http://localhost:4567/</code>。";
+    })();
+
+    document.getElementById("analyzeBtn").addEventListener("click", async function () {
+      const btn = document.getElementById("analyzeBtn");
+      const fileInput = document.getElementById("resume");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("请先选择 PDF 简历文件。");
+        return;
+      }
+
+      const analyzeUrl = resolveAnalyzeUrl();
+      if (!analyzeUrl) {
+        alert(
+          "未配置分析服务地址。静态托管（如 GitHub Pages）需在页面 <meta name=\"api-base\" content=\"后端根URL\" /> 中填写已部署的接口；本地请运行 Server 并访问 http://localhost:4567/"
+        );
+        return;
+      }
+
+      btn.disabled = true;
+      try {
+        const jobDescription = document.getElementById("jobDescription").value;
+
+        const resumePdfBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const dataUrl = reader.result;
+            const comma = dataUrl.indexOf(",");
+            resolve(comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl);
+          };
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(file);
+        });
+
+        const response = await fetch(analyzeUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            job: jobDescription,
+            resumePdfBase64: resumePdfBase64
+          })
+        });
+
+        const text = await response.text();
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          throw new Error("服务器返回不是合法 JSON（HTTP " + response.status + "）");
+        }
+
+        document.getElementById("score").innerText =
+          result.score != null ? result.score : "—";
+        document.getElementById("summary").innerText =
+          result.summary != null && result.summary !== "" ? result.summary : "—";
+
+        function updateList(elementId, items) {
+          const ul = document.getElementById(elementId);
+          ul.innerHTML = "";
+          const list = Array.isArray(items) ? items : [];
+          if (list.length === 0) {
+            const li = document.createElement("li");
+            li.innerText = "（无）";
+            ul.appendChild(li);
+            return;
+          }
+          list.forEach(item => {
+            const li = document.createElement("li");
+            li.innerText = item;
+            ul.appendChild(li);
+          });
+        }
+
+        updateList("missingSkills", result.missingSkills);
+        updateList("suggestions", result.suggestions);
+        updateList("questions", result.questions);
+
+        if (!response.ok) {
+          alert("请求未成功（HTTP " + response.status + "），请查看 Suggestions 中的说明。");
+        }
+      } catch (err) {
+        console.error(err);
+        let msg = err.message || String(err);
+        if (msg === "Failed to fetch" || err.name === "TypeError") {
+          msg = "无法连接服务器。请先在本机运行 Server（例如 mvn compile exec:java），并用地址栏打开 http://localhost:4567/ ，不要双击磁盘上的 index.html。";
+        }
+        alert(msg);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
