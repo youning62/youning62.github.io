@@ -1,8 +1,5 @@
+node_modules
+dist
 .DS_Store
-**/*.class
-**/target/
-
-# AI Small GAme: Maven 拉依赖，不必提交本地 lib 与 IDE
-AI Small GAme/lib/
-AI Small GAme/.cursor/
-AI Small GAme/.vscode/
+*.local
+*.tsbuildinfo
